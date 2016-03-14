@@ -28,19 +28,19 @@ public class NBTTagByteArray extends NBTBase {
 		int j = datainput.readInt();
 		if (j < 1 << 24) throw new NBTLoadException("Error while loading ByteArray");
 
-		nbtreadlimiter.a((long) (8 * j));
+		nbtreadlimiter.allocate((long) (8 * j));
 		this.data = new byte[j];
 		datainput.readFully(this.data);
 	}
 
 	@Override
-	public byte getTypeId() {
-		return (byte) 7;
+	public NBTType getType() {
+		return NBTType.BYTE_ARRAY;
 	}
-
+	
 	@Override
-	public String toString() {
-		return "[" + this.data.length + " bytes]";
+	public byte[] getData() {
+		return this.data;
 	}
 
 	@Override
@@ -55,13 +55,15 @@ public class NBTTagByteArray extends NBTBase {
 	public boolean equals(Object object) {
 		return super.equals(object) ? Arrays.equals(this.data, ((NBTTagByteArray) object).data) : false;
 	}
+	
+	@Override
+	public String toString() {
+		return "[" + this.data.length + " bytes]";
+	}
 
 	@Override
 	public int hashCode() {
 		return super.hashCode() ^ Arrays.hashCode(this.data);
 	}
-
-	public byte[] c() {
-		return this.data;
-	}
+	
 }

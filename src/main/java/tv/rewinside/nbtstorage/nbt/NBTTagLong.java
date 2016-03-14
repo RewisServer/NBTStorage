@@ -22,13 +22,18 @@ public class NBTTagLong extends NBTBase.NBTNumber {
 
 	@Override
 	void load(DataInput datainput, int i, NBTReadLimiter nbtreadlimiter) throws IOException {
-		nbtreadlimiter.a(64L);
+		nbtreadlimiter.allocate(64L);
 		this.data = datainput.readLong();
 	}
 
 	@Override
-	public byte getTypeId() {
-		return (byte) 4;
+	public NBTType getType() {
+		return NBTType.LONG;
+	}
+	
+	@Override
+	protected Number getNumber() {
+		return this.data;
 	}
 
 	@Override
@@ -55,35 +60,5 @@ public class NBTTagLong extends NBTBase.NBTNumber {
 	@Override
 	public int hashCode() {
 		return super.hashCode() ^ (int) (this.data ^ this.data >>> 32);
-	}
-
-	@Override
-	public long c() {
-		return this.data;
-	}
-
-	@Override
-	public int d() {
-		return (int) (this.data & -1L);
-	}
-
-	@Override
-	public short e() {
-		return (short) ((int) (this.data & 65535L));
-	}
-
-	@Override
-	public byte f() {
-		return (byte) ((int) (this.data & 255L));
-	}
-
-	@Override
-	public double g() {
-		return (double) this.data;
-	}
-
-	@Override
-	public float h() {
-		return (float) this.data;
 	}
 }

@@ -174,7 +174,7 @@ public class NBTStorage {
 		}
 
 		FileOutputStream stream = new FileOutputStream(file);
-		NBTCompressedStreamTools.a(compound, stream);
+		NBTCompressedStreamTools.write(compound, stream);
 	}
 
 	private NBTTagCompound read(File file) throws IOException {
@@ -182,7 +182,7 @@ public class NBTStorage {
 			throw new FileNotFoundException();
 		}
 
-		NBTTagCompound compound = NBTCompressedStreamTools.a(file.toURI().toURL().openStream());
+		NBTTagCompound compound = NBTCompressedStreamTools.read(file.toURI().toURL().openStream());
 
 		return compound;
 	}

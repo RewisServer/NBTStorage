@@ -15,13 +15,13 @@ import tv.rewinside.nbtstorage.exceptions.NBTReadException;
 
 public class NBTCompressedStreamTools {
 
-	public static NBTTagCompound a(InputStream inputstream) throws IOException {
+	public static NBTTagCompound read(InputStream inputstream) throws IOException {
 		DataInputStream datainputstream = new DataInputStream(new BufferedInputStream(new GZIPInputStream(inputstream)));
 
 		NBTTagCompound nbttagcompound;
 
 		try {
-			nbttagcompound = a((DataInput) datainputstream, NBTReadLimiter.a);
+			nbttagcompound = readLimited((DataInput) datainputstream, NBTReadLimiter.NO_LIMIT);
 		} finally {
 			datainputstream.close();
 		}
@@ -29,23 +29,23 @@ public class NBTCompressedStreamTools {
 		return nbttagcompound;
 	}
 
-	public static void a(NBTTagCompound nbttagcompound, OutputStream outputstream) throws IOException {
+	public static void write(NBTTagCompound nbttagcompound, OutputStream outputstream) throws IOException {
 		DataOutputStream dataoutputstream = new DataOutputStream(new BufferedOutputStream(new GZIPOutputStream(outputstream)));
 
 		try {
-			a(nbttagcompound, (DataOutput) dataoutputstream);
+			writeCompound(nbttagcompound, (DataOutput) dataoutputstream);
 		} finally {
 			dataoutputstream.close();
 		}
 
 	}
 
-	public static NBTTagCompound a(DataInputStream datainputstream) throws IOException {
-		return a((DataInput) datainputstream, NBTReadLimiter.a);
+	public static NBTTagCompound read(DataInputStream datainputstream) throws IOException {
+		return readLimited((DataInput) datainputstream, NBTReadLimiter.NO_LIMIT);
 	}
 
-	public static NBTTagCompound a(DataInput datainput, NBTReadLimiter nbtreadlimiter) throws IOException {
-		NBTBase nbtbase = a(datainput, 0, nbtreadlimiter);
+	public static NBTTagCompound readLimited(DataInput datainput, NBTReadLimiter nbtreadlimiter) throws IOException {
+		NBTBase nbtbase = readTag(datainput, 0, nbtreadlimiter);
 
 		if (nbtbase instanceof NBTTagCompound) {
 			return (NBTTagCompound) nbtbase;
@@ -54,26 +54,26 @@ public class NBTCompressedStreamTools {
 		}
 	}
 
-	public static void a(NBTTagCompound nbttagcompound, DataOutput dataoutput) throws IOException {
-		a((NBTBase) nbttagcompound, dataoutput);
+	public static void writeCompound(NBTTagCompound nbttagcompound, DataOutput dataoutput) throws IOException {
+		writeTag((NBTBase) nbttagcompound, dataoutput);
 	}
 
-	private static void a(NBTBase nbtbase, DataOutput dataoutput) throws IOException {
-		dataoutput.writeByte(nbtbase.getTypeId());
-		if (nbtbase.getTypeId() != 0) {
+	private static void writeTag(NBTBase nbtbase, DataOutput dataoutput) throws IOException {
+		dataoutput.writeByte(nbtbase.getType().toByte());
+		if (nbtbase.getType() != NBTType.END) {
 			dataoutput.writeUTF("");
 			nbtbase.write(dataoutput);
 		}
 	}
 
-	private static NBTBase a(DataInput datainput, int i, NBTReadLimiter nbtreadlimiter) throws IOException {
+	private static NBTBase readTag(DataInput datainput, int i, NBTReadLimiter nbtreadlimiter) throws IOException {
 		byte b0 = datainput.readByte();
 
 		if (b0 == 0) {
 			return new NBTTagEnd();
 		} else {
 			datainput.readUTF();
-			NBTBase nbtbase = NBTBase.createTag(b0);
+			NBTBase nbtbase = NBTType.fromByte(b0).newInstance();
 
 			try {
 				nbtbase.load(datainput, i, nbtreadlimiter);

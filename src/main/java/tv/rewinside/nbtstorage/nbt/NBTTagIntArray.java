@@ -32,7 +32,7 @@ public class NBTTagIntArray extends NBTBase {
 		int j = datainput.readInt();
 		if (j < 1 << 24) throw new NBTLoadException("Error while loading IntArray");
 
-		nbtreadlimiter.a((long) (32 * j));
+		nbtreadlimiter.allocate((long) (32 * j));
 		this.data = new int[j];
 
 		for (int k = 0; k < j; ++k) {
@@ -42,10 +42,28 @@ public class NBTTagIntArray extends NBTBase {
 	}
 
 	@Override
-	public byte getTypeId() {
-		return (byte) 11;
+	public NBTType getType() {
+		return NBTType.INT_ARRAY;
+	}
+	
+	@Override
+	public int[] getData() {
+		return this.data;
 	}
 
+	@Override
+	public NBTBase clone() {
+		int[] aint = new int[this.data.length];
+
+		System.arraycopy(this.data, 0, aint, 0, this.data.length);
+		return new NBTTagIntArray(aint);
+	}
+	
+	@Override
+	public boolean equals(Object object) {
+		return super.equals(object) ? Arrays.equals(this.data, ((NBTTagIntArray) object).data) : false;
+	}
+	
 	@Override
 	public String toString() {
 		String s = "[";
@@ -62,24 +80,7 @@ public class NBTTagIntArray extends NBTBase {
 	}
 
 	@Override
-	public NBTBase clone() {
-		int[] aint = new int[this.data.length];
-
-		System.arraycopy(this.data, 0, aint, 0, this.data.length);
-		return new NBTTagIntArray(aint);
-	}
-
-	@Override
-	public boolean equals(Object object) {
-		return super.equals(object) ? Arrays.equals(this.data, ((NBTTagIntArray) object).data) : false;
-	}
-
-	@Override
 	public int hashCode() {
 		return super.hashCode() ^ Arrays.hashCode(this.data);
-	}
-
-	public int[] c() {
-		return this.data;
 	}
 }

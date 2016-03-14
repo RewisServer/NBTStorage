@@ -22,13 +22,18 @@ public class NBTTagFloat extends NBTBase.NBTNumber {
 
 	@Override
 	void load(DataInput datainput, int i, NBTReadLimiter nbtreadlimiter) throws IOException {
-		nbtreadlimiter.a(32L);
+		nbtreadlimiter.allocate(32L);
 		this.data = datainput.readFloat();
 	}
 
 	@Override
-	public byte getTypeId() {
-		return (byte) 5;
+	public NBTType getType() {
+		return NBTType.FLOAT;
+	}
+	
+	@Override
+	protected Number getNumber() {
+		return this.data;
 	}
 
 	@Override
@@ -55,35 +60,5 @@ public class NBTTagFloat extends NBTBase.NBTNumber {
 	@Override
 	public int hashCode() {
 		return super.hashCode() ^ Float.floatToIntBits(this.data);
-	}
-
-	@Override
-	public long c() {
-		return (long) this.data;
-	}
-
-	@Override
-	public int d() {
-		return MathHelper.d(this.data);
-	}
-
-	@Override
-	public short e() {
-		return (short) (MathHelper.d(this.data) & '\uffff');
-	}
-
-	@Override
-	public byte f() {
-		return (byte) (MathHelper.d(this.data) & 255);
-	}
-
-	@Override
-	public double g() {
-		return (double) this.data;
-	}
-
-	@Override
-	public float h() {
-		return this.data;
 	}
 }

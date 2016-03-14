@@ -27,29 +27,29 @@ public class NBTTagString extends NBTBase {
 	@Override
 	void load(DataInput datainput, int i, NBTReadLimiter nbtreadlimiter) throws IOException {
 		this.data = datainput.readUTF();
-		nbtreadlimiter.a((long) (16 * this.data.length()));
+		nbtreadlimiter.allocate((long) (16 * this.data.length()));
 	}
 
 	@Override
-	public byte getTypeId() {
-		return (byte) 8;
+	public NBTType getType() {
+		return NBTType.STRING;
 	}
-
+	
 	@Override
-	public String toString() {
-		return "\"" + this.data.replace("\"", "\\\"") + "\"";
+	public String getData() {
+		return this.data;
+	}
+	
+	@Override
+	public boolean isEmpty() {
+		return this.data.isEmpty();
 	}
 
 	@Override
 	public NBTBase clone() {
 		return new NBTTagString(this.data);
 	}
-
-	@Override
-	public boolean isEmpty() {
-		return this.data.isEmpty();
-	}
-
+	
 	@Override
 	public boolean equals(Object object) {
 		if (!super.equals(object)) {
@@ -60,14 +60,14 @@ public class NBTTagString extends NBTBase {
 			return this.data == null && nbttagstring.data == null || this.data != null && this.data.equals(nbttagstring.data);
 		}
 	}
+	
+	@Override
+	public String toString() {
+		return "\"" + this.data.replace("\"", "\\\"") + "\"";
+	}
 
 	@Override
 	public int hashCode() {
 		return super.hashCode() ^ this.data.hashCode();
-	}
-
-	@Override
-	public String a_() {
-		return this.data;
 	}
 }

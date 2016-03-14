@@ -6,66 +6,23 @@ import java.io.IOException;
 
 public abstract class NBTBase {
 
-	public static final String[] a = new String[]{"END", "BYTE", "SHORT", "INT", "LONG", "FLOAT", "DOUBLE", "BYTE[]", "STRING", "LIST", "COMPOUND", "INT[]"};
+	protected NBTBase() {
+	}
 
 	abstract void write(DataOutput dataoutput) throws IOException;
 
 	abstract void load(DataInput datainput, int i, NBTReadLimiter nbtreadlimiter) throws IOException;
 
-	@Override
-	public abstract String toString();
-
-	public abstract byte getTypeId();
-
-	protected NBTBase() {
-	}
-
-	protected static NBTBase createTag(byte b0) {
-		switch (b0) {
-			case 0:
-				return new NBTTagEnd();
-
-			case 1:
-				return new NBTTagByte();
-
-			case 2:
-				return new NBTTagShort();
-
-			case 3:
-				return new NBTTagInt();
-
-			case 4:
-				return new NBTTagLong();
-
-			case 5:
-				return new NBTTagFloat();
-
-			case 6:
-				return new NBTTagDouble();
-
-			case 7:
-				return new NBTTagByteArray();
-
-			case 8:
-				return new NBTTagString();
-
-			case 10:
-				return new NBTTagCompound();
-
-			case 11:
-				return new NBTTagIntArray();
-
-			default:
-				return null;
-		}
-	}
-
-	@Override
-	public abstract NBTBase clone();
+	public abstract NBTType getType();
+	
+	public abstract Object getData();
 
 	public boolean isEmpty() {
 		return false;
 	}
+
+	@Override
+	public abstract NBTBase clone();
 
 	@Override
 	public boolean equals(Object object) {
@@ -74,34 +31,49 @@ public abstract class NBTBase {
 		} else {
 			NBTBase nbtbase = (NBTBase) object;
 
-			return this.getTypeId() == nbtbase.getTypeId();
+			return this.getType() == nbtbase.getType();
 		}
 	}
 
 	@Override
-	public int hashCode() {
-		return this.getTypeId();
-	}
+	public abstract String toString();
 
-	protected String a_() {
-		return this.toString();
+	@Override
+	public int hashCode() {
+		return this.getType().toByte();
 	}
 
 	public abstract static class NBTNumber extends NBTBase {
 
-		protected NBTNumber() {
+		protected abstract Number getNumber();
+		
+		@Override
+		public Number getData() {
+			return this.getNumber();
+		}
+		
+		public byte getByte() {
+			return (byte) this.getNumber();
 		}
 
-		public abstract long c();
+		public short getShort() {
+			return (short) this.getNumber();
+		}
 
-		public abstract int d();
+		public int getInt() {
+			return (int) this.getNumber();
+		}
 
-		public abstract short e();
+		public long getLong() {
+			return (long) this.getNumber();
+		}
 
-		public abstract byte f();
+		public float getFloat() {
+			return (float) this.getNumber();
+		}
 
-		public abstract double g();
-
-		public abstract float h();
+		public double getDouble() {
+			return (double) this.getNumber();
+		}
 	}
 }

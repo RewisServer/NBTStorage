@@ -18,8 +18,13 @@ public class NBTTagEnd extends NBTBase {
 	}
 
 	@Override
-	public byte getTypeId() {
-		return (byte) 0;
+	public NBTType getType() {
+		return NBTType.END;
+	}
+	
+	@Override
+	public Object getData() {
+		return null;
 	}
 
 	@Override

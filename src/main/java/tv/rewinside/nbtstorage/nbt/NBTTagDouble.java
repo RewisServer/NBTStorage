@@ -22,25 +22,25 @@ public class NBTTagDouble extends NBTBase.NBTNumber {
 
 	@Override
 	void load(DataInput datainput, int i, NBTReadLimiter nbtreadlimiter) throws IOException {
-		nbtreadlimiter.a(64L);
+		nbtreadlimiter.allocate(64L);
 		this.data = datainput.readDouble();
 	}
 
 	@Override
-	public byte getTypeId() {
-		return (byte) 6;
+	public NBTType getType() {
+		return NBTType.DOUBLE;
 	}
-
+	
 	@Override
-	public String toString() {
-		return "" + this.data + "d";
+	protected Number getNumber() {
+		return this.data;
 	}
 
 	@Override
 	public NBTBase clone() {
 		return new NBTTagDouble(this.data);
 	}
-
+	
 	@Override
 	public boolean equals(Object object) {
 		if (super.equals(object)) {
@@ -51,7 +51,12 @@ public class NBTTagDouble extends NBTBase.NBTNumber {
 			return false;
 		}
 	}
-
+	
+	@Override
+	public String toString() {
+		return "" + this.data + "d";
+	}
+	
 	@Override
 	public int hashCode() {
 		long i = Double.doubleToLongBits(this.data);
@@ -59,33 +64,4 @@ public class NBTTagDouble extends NBTBase.NBTNumber {
 		return super.hashCode() ^ (int) (i ^ i >>> 32);
 	}
 
-	@Override
-	public long c() {
-		return (long) Math.floor(this.data);
-	}
-
-	@Override
-	public int d() {
-		return MathHelper.floor(this.data);
-	}
-
-	@Override
-	public short e() {
-		return (short) (MathHelper.floor(this.data) & '\uffff');
-	}
-
-	@Override
-	public byte f() {
-		return (byte) (MathHelper.floor(this.data) & 255);
-	}
-
-	@Override
-	public double g() {
-		return this.data;
-	}
-
-	@Override
-	public float h() {
-		return (float) this.data;
-	}
 }

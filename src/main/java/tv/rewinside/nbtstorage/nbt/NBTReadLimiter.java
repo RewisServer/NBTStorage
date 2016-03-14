@@ -2,22 +2,22 @@ package tv.rewinside.nbtstorage.nbt;
 
 public class NBTReadLimiter {
 
-	public static final NBTReadLimiter a = new NBTReadLimiter(0L) {
+	public static final NBTReadLimiter NO_LIMIT = new NBTReadLimiter(0L) {
 		@Override
-		public void a(long i) {
+		public void allocate(long bits) {
 		}
 	};
-	private final long b;
-	private long c;
+	private final long byteLimit;
+	private long allocBytes;
 
-	public NBTReadLimiter(long i) {
-		this.b = i;
+	public NBTReadLimiter(long bitLimit) {
+		this.byteLimit = bitLimit;
 	}
 
-	public void a(long i) {
-		this.c += i / 8L;
-		if (this.c > this.b) {
-			throw new RuntimeException("Tried to read NBT tag that was too big; tried to allocate: " + this.c + "bytes where max allowed: " + this.b);
+	public void allocate(long bits) {
+		this.allocBytes += bits / 8L;
+		if (this.allocBytes > this.byteLimit) {
+			throw new RuntimeException("Tried to read NBT tag that was too big; tried to allocate: " + this.allocBytes + "bytes where max allowed: " + this.byteLimit);
 		}
 	}
 }

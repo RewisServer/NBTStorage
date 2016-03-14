@@ -58,7 +58,7 @@ public class TestSchematic implements NBTFileSchematic {
 	}
 
 	public void readGen(NBTBase base) {
-		String value = ((NBTTagString) base).a_();
+		String value = ((NBTTagString) base).getData();
 		
 		this.generated = "Test " + value + " Test";
 	}

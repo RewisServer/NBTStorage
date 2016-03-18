@@ -16,6 +16,9 @@ import tv.rewinside.nbtstorage.exceptions.NBTSaveException;
 import tv.rewinside.nbtstorage.nbt.NBTBase;
 import tv.rewinside.nbtstorage.nbt.NBTCompressedStreamTools;
 import tv.rewinside.nbtstorage.nbt.NBTTagCompound;
+import tv.rewinside.nbtstorage.nbt.NBTTagList;
+import tv.rewinside.nbtstorage.nbt.NBTTagString;
+import tv.rewinside.nbtstorage.nbt.NBTType;
 
 public class NBTStorage {
 
@@ -53,6 +56,8 @@ public class NBTStorage {
 						field.set(instance, ((byte) dataField.get(baseTag)) != 0);
 					} else if (field.getType() == dataField.getType()) {
 						field.set(instance, dataField.get(baseTag));
+					} else if (field.getType().isEnum() && baseTag.getType() == NBTType.STRING) {
+						field.set(instance, Enum.valueOf((Class<Enum>) field.getType(), ((NBTTagString) baseTag).getData()));
 					} else {
 						throw new NBTLoadException("Invalid Type for field " + field.getName() + "(" + field.getType() + ":" + dataField.getType() + ")");
 					}
@@ -142,6 +147,10 @@ public class NBTStorage {
 					compound.setShort(key, field.getShort(schem));
 				} else if (field.getType() == String.class) {
 					compound.setString(key, (String) field.get(schem));
+				} else if (field.getType().isEnum()) {
+					compound.setString(key, ((Enum)field.get(schem)).name());
+				} else if (field.getType() == NBTTagList.class) { 
+					compound.set(key, (NBTBase) field.get(schem));
 				} else {
 					throw new NBTSaveException(field.getName() + " is an unsupported data Type!");
 				}

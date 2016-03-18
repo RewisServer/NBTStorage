@@ -5,6 +5,7 @@ import java.util.Random;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import org.junit.Test;
+import tv.rewinside.nbtstorage.TestSchematic.TestEnum;
 
 
 public class TestClass {
@@ -16,7 +17,7 @@ public class TestClass {
 		NBTStorage storage = new NBTStorage();
 		File file = new File("test.nbt");
 		
-		TestSchematic test1 = new TestSchematic(this.rand.nextBoolean(), this.rand.nextInt(), (byte) this.rand.nextInt(256), this.randomString(100), this.rand.nextLong(), (short) this.rand.nextInt(Short.MAX_VALUE), "Test " + this.randomString(15) + " Test");
+		TestSchematic test1 = new TestSchematic(this.rand.nextBoolean(), this.rand.nextInt(), (byte) this.rand.nextInt(256), this.randomString(100), this.rand.nextLong(), (short) this.rand.nextInt(Short.MAX_VALUE), "Test " + this.randomString(15) + " Test", TestEnum.values()[this.rand.nextInt(TestEnum.values().length)]);
 		storage.toNBT(test1, file);
 		
 		TestSchematic test2 = (TestSchematic) storage.fromNBT(file, TestSchematic.class);

@@ -1,5 +1,7 @@
 package tv.rewinside.nbtstorage;
 
+import java.util.Arrays;
+import java.util.Collection;
 import tv.rewinside.nbtstorage.annotations.Options;
 import tv.rewinside.nbtstorage.nbt.NBTBase;
 import tv.rewinside.nbtstorage.nbt.NBTTagString;
@@ -12,6 +14,7 @@ public class TestSchematic implements NBTFileSchematic {
 	private String str;
 	private long l;
 	private short s;
+	private double d;
 	@Options(readerMethod = "readGen", writerMethod = "writeGen")
 	private String generated;
 	private TestEnum tEnum;
@@ -20,15 +23,16 @@ public class TestSchematic implements NBTFileSchematic {
 
 	}
 
-	public TestSchematic(boolean bln, int n, byte b, String str, long l, short s, String generated, TestEnum tEnum) {
+	public TestSchematic(boolean bln, int n, byte b, String str, long l, short s, double d, String generated, TestEnum tEnum) {
 		this.bln = bln;
 		this.n = n;
 		this.b = b;
 		this.str = str;
 		this.l = l;
 		this.s = s;
-		this.tEnum = tEnum;
+		this.d = d;
 		this.generated = generated;
+		this.tEnum = tEnum;
 	}
 
 	public void setBln(boolean bln) {
@@ -74,8 +78,18 @@ public class TestSchematic implements NBTFileSchematic {
 	}
 
 	@Override
+	public double getVersion() {
+		return 1.0;
+	}
+
+	@Override
+	public Collection<Double> getSupportedVersions() {
+		return Arrays.asList(1.0);
+	}
+
+	@Override
 	public String toString() {
-		return "TestSchematic{" + "bln=" + bln + ", n=" + n + ", b=" + b + ", str=" + str + ", l=" + l + ", s=" + s + ", generated=" + generated + ", tEnum=" + tEnum + '}';
+		return "TestSchematic{" + "bln=" + bln + ", n=" + n + ", b=" + b + ", str=" + str + ", l=" + l + ", s=" + s + ", d=" + d + ", generated=" + generated + ", tEnum=" + tEnum + '}';
 	}
 
 	public enum TestEnum {

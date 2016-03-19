@@ -17,11 +17,14 @@ public class TestClass {
 		NBTStorage storage = new NBTStorage();
 		File file = new File("test.nbt");
 		
-		TestSchematic test1 = new TestSchematic(this.rand.nextBoolean(), this.rand.nextInt(), (byte) this.rand.nextInt(256), this.randomString(100), this.rand.nextLong(), (short) this.rand.nextInt(Short.MAX_VALUE), "Test " + this.randomString(15) + " Test", TestEnum.values()[this.rand.nextInt(TestEnum.values().length)]);
+		TestSchematic test1 = new TestSchematic(this.rand.nextBoolean(), this.rand.nextInt(), (byte) this.rand.nextInt(256), this.randomString(100), this.rand.nextLong(), (short) this.rand.nextInt(Short.MAX_VALUE), this.rand.nextDouble(), "Test " + this.randomString(15) + " Test", TestEnum.values()[this.rand.nextInt(TestEnum.values().length)]);
 		storage.toNBT(test1, file);
 		
 		TestSchematic test2 = (TestSchematic) storage.fromNBT(file, TestSchematic.class);
 		assertThat("Test1's String", test1.toString(), is(test2.toString()));
+		
+		System.out.println(test1.toString());
+		System.out.println(test2.toString());
 	}
 
 	private String randomString(int length) {

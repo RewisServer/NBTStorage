@@ -15,6 +15,11 @@ public class NBTTagList extends NBTBase {
 
 	public NBTTagList() {
 	}
+	
+	public NBTTagList(NBTType type, List<NBTBase> values) {
+		this.type = type;
+		this.list = values;
+	}
 
 	@Override
 	void write(DataOutput dataoutput) throws IOException {

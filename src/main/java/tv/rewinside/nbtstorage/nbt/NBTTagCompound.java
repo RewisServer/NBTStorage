@@ -54,7 +54,7 @@ public class NBTTagCompound extends NBTBase {
 		}
 	}
 
-	public Set<String> c() {
+	public Set<String> keySet() {
 		return this.map.keySet();
 	}
 

@@ -65,6 +65,10 @@ public class NBTTagList extends NBTBase {
 		}
 	}
 
+	public NBTType getListType() {
+		return this.type;
+	}
+	
 	@Override
 	public NBTType getType() {
 		return NBTType.LIST;

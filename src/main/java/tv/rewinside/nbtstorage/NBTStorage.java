@@ -14,6 +14,7 @@ import tv.rewinside.nbtstorage.annotations.*;
 import tv.rewinside.nbtstorage.exceptions.NBTLoadException;
 import tv.rewinside.nbtstorage.exceptions.NBTSaveException;
 import tv.rewinside.nbtstorage.nbt.NBTBase;
+import tv.rewinside.nbtstorage.nbt.NBTBase.NBTNumber;
 import tv.rewinside.nbtstorage.nbt.NBTCompressedStreamTools;
 import tv.rewinside.nbtstorage.nbt.NBTTagCompound;
 import tv.rewinside.nbtstorage.nbt.NBTTagList;
@@ -112,7 +113,7 @@ public class NBTStorage {
 					Method processMethod = schem.getClass().getDeclaredMethod(options.writerMethod());
 					boolean mPreState = processMethod.isAccessible();
 					processMethod.setAccessible(true);
-					if (processMethod.getReturnType().getSuperclass() == null || (processMethod.getReturnType().getSuperclass() != NBTBase.class && processMethod.getReturnType().getSuperclass() != NBTBase.NBTNumber.class)) {
+					if (processMethod.getReturnType().getSuperclass() == null || (processMethod.getReturnType().getSuperclass() != NBTBase.class && processMethod.getReturnType().getSuperclass() != NBTNumber.class)) {
 						throw new NBTSaveException(String.format("Process Method for %s has an invalid Return Type", field.getName()));
 					}
 

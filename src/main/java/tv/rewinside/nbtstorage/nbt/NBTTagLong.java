@@ -3,8 +3,9 @@ package tv.rewinside.nbtstorage.nbt;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
+import tv.rewinside.nbtstorage.nbt.NBTBase.NBTNumber;
 
-public class NBTTagLong extends NBTBase.NBTNumber {
+public class NBTTagLong extends NBTNumber {
 
 	private long data;
 

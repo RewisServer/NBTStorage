@@ -32,6 +32,11 @@ public class NBTStorage {
 		} catch (IOException | InstantiationException | IllegalAccessException ex) {
 			throw new NBTLoadException("Error while loading NBT from File", ex);
 		}
+		
+		double version = compound.getDouble("_VERSION");
+		if (!instance.getSupportedVersions().contains(version)) {
+			throw new NBTLoadException("Data Version of File is not supportet by the current Schematic!");
+		}
 
 		for (Field field : schem.getDeclaredFields()) {
 			boolean preState = field.isAccessible();
@@ -78,6 +83,8 @@ public class NBTStorage {
 		ClassOptions classOptions = schem.getClass().getAnnotation(ClassOptions.class);
 		Field[] rawFields = schem.getClass().getDeclaredFields();
 		Set<Field> fields = new HashSet<>();
+		
+		compound.setDouble("_VERSION", schem.getVersion());
 		
 		if (classOptions == null) {
 			fields.addAll(Arrays.asList(rawFields));

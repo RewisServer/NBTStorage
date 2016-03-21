@@ -23,11 +23,11 @@ import tv.rewinside.nbtstorage.nbt.NBTType;
 
 public class NBTStorage {
 
-	public NBTFileSchematic fromNBT(File file, Class<? extends NBTFileSchematic> schem) {
+	public static NBTFileSchematic fromNBT(File file, Class<? extends NBTFileSchematic> schem) {
 		NBTTagCompound compound;
 		NBTFileSchematic instance;
 		try {
-			compound = this.read(file);
+			compound = read(file);
 			instance = schem.newInstance();
 		} catch (IOException | InstantiationException | IllegalAccessException ex) {
 			throw new NBTLoadException("Error while loading NBT from File", ex);
@@ -78,7 +78,7 @@ public class NBTStorage {
 		return instance;
 	}
 
-	public void toNBT(NBTFileSchematic schem, File file) {
+	public static void toNBT(NBTFileSchematic schem, File file) {
 		NBTTagCompound compound = new NBTTagCompound();
 		ClassOptions classOptions = schem.getClass().getAnnotation(ClassOptions.class);
 		Field[] rawFields = schem.getClass().getDeclaredFields();
@@ -171,13 +171,13 @@ public class NBTStorage {
 		}
 
 		try {
-			this.write(compound, file);
+			write(compound, file);
 		} catch (IOException ex) {
 			throw new NBTSaveException("Error while saving to File", ex);
 		}
 	}
 
-	private void write(NBTTagCompound compound, File file) throws IOException {
+	private static void write(NBTTagCompound compound, File file) throws IOException {
 		if (file.getParentFile() != null && !file.getParentFile().exists()) {
 			file.getParentFile().mkdirs();
 		}
@@ -194,7 +194,7 @@ public class NBTStorage {
 		NBTCompressedStreamTools.write(compound, stream);
 	}
 
-	private NBTTagCompound read(File file) throws IOException {
+	private static NBTTagCompound read(File file) throws IOException {
 		if (!file.exists()) {
 			throw new FileNotFoundException();
 		}

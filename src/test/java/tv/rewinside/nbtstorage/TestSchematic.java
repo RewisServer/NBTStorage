@@ -1,10 +1,15 @@
 package tv.rewinside.nbtstorage;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import tv.rewinside.nbtstorage.annotations.Options;
 import tv.rewinside.nbtstorage.nbt.NBTBase;
+import tv.rewinside.nbtstorage.nbt.NBTTagList;
+import tv.rewinside.nbtstorage.nbt.NBTTagLong;
 import tv.rewinside.nbtstorage.nbt.NBTTagString;
+import tv.rewinside.nbtstorage.nbt.NBTType;
 
 public class TestSchematic implements NBTFileSchematic {
 
@@ -18,12 +23,14 @@ public class TestSchematic implements NBTFileSchematic {
 	@Options(readerMethod = "readGen", writerMethod = "writeGen")
 	private String generated;
 	private TestEnum tEnum;
+	@Options(readerMethod = "readLongList", writerMethod = "writeLongList")
+	private List<Long> longList;
 
 	public TestSchematic() {
 
 	}
 
-	public TestSchematic(boolean bln, int n, byte b, String str, long l, short s, double d, String generated, TestEnum tEnum) {
+	public TestSchematic(boolean bln, int n, byte b, String str, long l, short s, double d, String generated, TestEnum tEnum, Long[] longList) {
 		this.bln = bln;
 		this.n = n;
 		this.b = b;
@@ -33,6 +40,7 @@ public class TestSchematic implements NBTFileSchematic {
 		this.d = d;
 		this.generated = generated;
 		this.tEnum = tEnum;
+		this.longList = Arrays.asList(longList);
 	}
 
 	public void setBln(boolean bln) {
@@ -77,6 +85,29 @@ public class TestSchematic implements NBTFileSchematic {
 		return new NBTTagString(this.generated.split(" ")[1]);
 	}
 
+	public void readLongList(NBTBase base) {
+		if (base.getType() != NBTType.LIST) return;
+		NBTTagList list = (NBTTagList) base;
+
+		ArrayList<Long> longList = new ArrayList<>();
+
+		if (list.getListType() != NBTType.LONG) return;
+		list.getData().stream().filter((tag) -> !(tag.getType() != NBTType.LONG)).forEach((tag) -> {
+			longList.add(((NBTTagLong) tag).getLong());
+		});
+		
+		this.longList = longList;
+	}
+	
+	public NBTTagList writeLongList() {
+		NBTTagList list = new NBTTagList();
+		this.longList.stream().forEach((l) -> {
+			list.add(new NBTTagLong(l));
+		});
+		
+		return list;
+	}
+
 	@Override
 	public double getVersion() {
 		return 1.0;
@@ -89,7 +120,7 @@ public class TestSchematic implements NBTFileSchematic {
 
 	@Override
 	public String toString() {
-		return "TestSchematic{" + "bln=" + bln + ", n=" + n + ", b=" + b + ", str=" + str + ", l=" + l + ", s=" + s + ", d=" + d + ", generated=" + generated + ", tEnum=" + tEnum + '}';
+		return "TestSchematic{" + "bln=" + bln + ", n=" + n + ", b=" + b + ", str=" + str + ", l=" + l + ", s=" + s + ", d=" + d + ", generated=" + generated + ", tEnum=" + tEnum + ", longList=" + longList + '}';
 	}
 
 	public enum TestEnum {

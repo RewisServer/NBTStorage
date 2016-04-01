@@ -30,7 +30,7 @@ public class NBTTagIntArray extends NBTBase {
 	@Override
 	void load(DataInput datainput, int i, NBTReadLimiter nbtreadlimiter) throws IOException {
 		int j = datainput.readInt();
-		if (j < 1 << 24) throw new NBTLoadException("Error while loading IntArray");
+		if (j >= 1 << 24) throw new NBTLoadException("Error while loading IntArray");
 
 		nbtreadlimiter.allocate((long) (32 * j));
 		this.data = new int[j];

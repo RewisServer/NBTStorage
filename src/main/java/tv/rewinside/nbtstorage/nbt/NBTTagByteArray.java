@@ -26,7 +26,7 @@ public class NBTTagByteArray extends NBTBase {
 	@Override
 	void load(DataInput datainput, int i, NBTReadLimiter nbtreadlimiter) throws IOException {
 		int j = datainput.readInt();
-		if (j < 1 << 24) throw new NBTLoadException("Error while loading ByteArray");
+		if (j >= 1 << 24) throw new NBTLoadException("Error while loading ByteArray");
 
 		nbtreadlimiter.allocate((long) (8 * j));
 		this.data = new byte[j];

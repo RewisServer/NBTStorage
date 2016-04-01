@@ -223,7 +223,7 @@ public class NBTTagCompound extends NBTBase {
 			} else {
 				NBTTagList nbttaglist = (NBTTagList) this.map.get(key);
 
-				return nbttaglist.size() > 0 && nbttaglist.getType() != type ? new NBTTagList() : nbttaglist;
+				return nbttaglist.size() == 0 || nbttaglist.getListType() != type ? new NBTTagList() : nbttaglist;
 			}
 		} catch (ClassCastException classcastexception) {
 			throw new NBTReadException(classcastexception);

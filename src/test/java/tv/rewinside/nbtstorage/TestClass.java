@@ -1,7 +1,6 @@
 package tv.rewinside.nbtstorage;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.Random;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;

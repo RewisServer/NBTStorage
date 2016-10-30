@@ -4,7 +4,7 @@
 
     <groupId>tv.rewinside</groupId>
     <artifactId>NBTStorage</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
 	<packaging>jar</packaging>
 
 	<parent>
@@ -12,7 +12,19 @@
 		<artifactId>MavenCommon</artifactId>
 		<version>1.0</version>
 	</parent>
-	
+
+	<dependencies>
+		<!-- Dependencies for unit tests -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.hamcrest</groupId>
+			<artifactId>hamcrest-library</artifactId>
+		</dependency>
+	</dependencies>
+
 	<build>
 		<plugins>
 			<!-- Test -->

@@ -177,7 +177,7 @@ public class NBTStorage {
 		}
 	}
 
-	private static void write(NBTTagCompound compound, File file) throws IOException {
+	public static void write(NBTTagCompound compound, File file) throws IOException {
 		if (file.getParentFile() != null && !file.getParentFile().exists()) {
 			file.getParentFile().mkdirs();
 		}
@@ -194,7 +194,7 @@ public class NBTStorage {
 		NBTCompressedStreamTools.write(compound, stream);
 	}
 
-	private static NBTTagCompound read(File file) throws IOException {
+	public static NBTTagCompound read(File file) throws IOException {
 		if (!file.exists()) {
 			throw new FileNotFoundException();
 		}
